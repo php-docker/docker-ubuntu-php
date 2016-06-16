@@ -32,9 +32,6 @@ RUN apt-get update --fix-missing \
   && sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php5/fpm/php.ini \
   && sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php5/fpm/php.ini
 
-COPY files/supervisord.conf /etc/supervisor/supervisord.conf
-COPY files/laravel.conf /etc/nginx/sites-available/default
-
 ADD files/instantclient.zip /opt/
 RUN unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
   && ln -s /opt/instantclient/libclntsh.so.12.1 /opt/instantclient/libclntsh.so \
@@ -43,7 +40,9 @@ RUN unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
   && echo 'extension=oci8.so' > /etc/php5/mods-available/oci8.ini \
   && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/fpm/conf.d/20-oci8.ini
 
-VOLUME ["/var/www/application"]
+COPY files/supervisord.conf /etc/supervisor/supervisord.conf
+
+VOLUME ["/var/www"]
 
 EXPOSE 80 443
 
