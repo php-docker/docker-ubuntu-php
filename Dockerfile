@@ -2,12 +2,13 @@ FROM ubuntu:wily
 
 MAINTAINER Fábio Luciano <fabio.goisl@ctis.com.br>
 
-ENV COMPOSER_HOME /usr/share/composer/
 ENV TIMEZONE            America/Sao_Paulo
 ENV PHP_MEMORY_LIMIT    512M
 ENV MAX_UPLOAD          50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST        100M
+
+ADD files/instantclient.zip /opt/
 
 RUN apt-get update --fix-missing \
   && apt-get dist-upgrade -y \
@@ -18,6 +19,12 @@ RUN apt-get update --fix-missing \
     php5-geoip php5-mcrypt php5-memcache php5-xsl php5-memcached php5-pgsql \
     php5-xdebug php5-curl php5-mongo php5-mysql php5-imagick php5-cli php-pear \
     php5-dev \
+  && unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
+  && ln -s /opt/instantclient/libclntsh.so.12.1 /opt/instantclient/libclntsh.so \
+  && ln -s /opt/instantclient/libocci.so.12.1 /opt/instantclient/libocci.so \
+  && printf 'instantclient,/opt/instantclient' | pecl install oci8-2.0.11 \
+  && echo 'extension=oci8.so' > /etc/php5/mods-available/oci8.ini \
+  && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/fpm/conf.d/20-oci8.ini \
   && apt-get remove --purge -y software-properties-common \
   && apt-get autoremove -y && apt-get clean && apt-get autoclean \
   && echo -n > /var/lib/apt/extended_states \
@@ -31,14 +38,6 @@ RUN apt-get update --fix-missing \
   && sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php5/fpm/php.ini \
   && sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php5/fpm/php.ini \
   && sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= 0|i" /etc/php5/fpm/php.ini
-
-ADD files/instantclient.zip /opt/
-RUN unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
-  && ln -s /opt/instantclient/libclntsh.so.12.1 /opt/instantclient/libclntsh.so \
-  && ln -s /opt/instantclient/libocci.so.12.1 /opt/instantclient/libocci.so \
-  && printf 'instantclient,/opt/instantclient' | pecl install oci8-2.0.11 \
-  && echo 'extension=oci8.so' > /etc/php5/mods-available/oci8.ini \
-  && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/fpm/conf.d/20-oci8.ini
 
 COPY files/supervisord.conf /etc/supervisor/supervisord.conf
 
