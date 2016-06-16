@@ -1,6 +1,6 @@
 FROM ubuntu:wily
 
-MAINTAINER Fábio Luciano <fabio.goisl@ctis.com.br>
+MAINTAINER Fábio Luciano <fabioluciano@php.net>
 
 ENV TIMEZONE            America/Sao_Paulo
 ENV PHP_MEMORY_LIMIT    512M
