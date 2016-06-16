@@ -2,7 +2,6 @@ FROM ubuntu:wily
 
 MAINTAINER Fábio Luciano <fabio.goisl@ctis.com.br>
 
-ENV COMPOSER_HOME /usr/share/composer/
 ENV TIMEZONE            America/Sao_Paulo
 ENV PHP_MEMORY_LIMIT    512M
 ENV MAX_UPLOAD          50M
