@@ -12,9 +12,8 @@ ADD files/instantclient.zip /opt/
 
 RUN apt-get update --fix-missing \
   && apt-get dist-upgrade -y \
-  && apt-get install --no-install-recommends -y supervisor \
   && apt-get install --no-install-recommends -y curl autoconf g++ gcc curl git \
-  make nginx unzip \
+  make nginx unzip supervisor ca-certificates \
   && apt-get install --no-install-recommends -y php5 php5-dev php5-gd php5-fpm \
     php5-geoip php5-mcrypt php5-memcache php5-xsl php5-memcached php5-pgsql \
     php5-xdebug php5-curl php5-mongo php5-mysql php5-imagick php5-cli php-pear \
