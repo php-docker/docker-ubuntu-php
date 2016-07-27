@@ -17,13 +17,14 @@ RUN apt-get update --fix-missing \
   && apt-get install --no-install-recommends -y php5 php5-dev php5-gd php5-fpm \
     php5-geoip php5-mcrypt php5-memcache php5-xsl php5-memcached php5-pgsql \
     php5-xdebug php5-curl php5-mongo php5-mysql php5-imagick php5-cli php-pear \
-    php5-dev \
+    php5-dev php5-ldap \
   && unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
   && ln -s /opt/instantclient/libclntsh.so.12.1 /opt/instantclient/libclntsh.so \
   && ln -s /opt/instantclient/libocci.so.12.1 /opt/instantclient/libocci.so \
   && printf 'instantclient,/opt/instantclient' | pecl install oci8-2.0.11 \
   && echo 'extension=oci8.so' > /etc/php5/mods-available/oci8.ini \
   && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/fpm/conf.d/20-oci8.ini \
+  && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/cli/conf.d/20-oci8.ini \
   && apt-get remove --purge -y software-properties-common \
   && apt-get autoremove -y && apt-get clean && apt-get autoclean \
   && echo -n > /var/lib/apt/extended_states \
