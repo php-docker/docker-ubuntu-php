@@ -22,7 +22,7 @@ RUN apt-get update --fix-missing \
   && unzip -q /opt/instantclient.zip -d /opt ; rm  /opt/instantclient.zip \
   && ln -s /opt/instantclient/libclntsh.so.12.1 /opt/instantclient/libclntsh.so \
   && ln -s /opt/instantclient/libocci.so.12.1 /opt/instantclient/libocci.so \
-  && printf 'instantclient,/opt/instantclient' | pecl install oci8-2.0.11 \
+  && printf 'instantclient,/opt/instantclient' | pecl install oci8-2.0.10 \
   && echo 'extension=oci8.so' > /etc/php5/mods-available/oci8.ini \
   && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/cli/conf.d/ \
   && ln -s /etc/php5/mods-available/oci8.ini /etc/php5/fpm/conf.d/ \
